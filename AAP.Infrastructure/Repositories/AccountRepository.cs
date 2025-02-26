@@ -23,6 +23,7 @@ namespace AAP.Infrastructure.Repositories
         {
             User? exUserByLogin = await userManager.FindByNameAsync(user.UserName);
             User? exUserByEmail = await userManager.FindByEmailAsync(user.Email);
+
             if(exUserByLogin == null && exUserByEmail == null)
             {
                 User newUser = new User

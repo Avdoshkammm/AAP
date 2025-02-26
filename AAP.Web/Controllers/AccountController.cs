@@ -1,5 +1,7 @@
 ﻿using AAP.Application.DTO;
 using AAP.Application.Interfaces;
+using AAP.Domain.Entities;
+using AAP.Domain.Interfaces;
 using AAP.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,27 +9,33 @@ namespace AAP.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IAccountService service;
-        public AccountController(IAccountService _service)
+        private readonly IAccountRepository service;
+        public AccountController(IAccountRepository _service)
         {
             service = _service;
         }
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
+        //с класса dto сделал user просто
+        //использовал другой интерфейс
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel viewModel)
         {
             if(ModelState.IsValid)
             {
-                UserDTO user = new UserDTO()
+                User user = new User()
                 {
-                    uUserName = viewModel.Login,
-                    uEmail = viewModel.Email,
-                    uFirstName = viewModel.FirstName,
-                    uLastName = viewModel.LastName,
-                    uPathronomic = viewModel.Pathronomic,
+                    UserName = viewModel.Login,
+                    Email = viewModel.Email,
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName,
+                    Pathronomic = viewModel.Pathronomic,
+                    //PasswordHash = viewModel.Password
                 };
                 await service.Register(user, viewModel.Password);
                 return RedirectToAction("Index", "Home");

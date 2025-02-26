@@ -1,5 +1,10 @@
+using AAP.Application.Interfaces;
+using AAP.Application.Services;
 using AAP.Domain.Entities;
+using AAP.Domain.Interfaces;
 using AAP.Infrastructure.Data;
+using AAP.Infrastructure.Repositories;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddAutoMapper(typeof(Profile));
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AAPDBContext>(options =>
 {

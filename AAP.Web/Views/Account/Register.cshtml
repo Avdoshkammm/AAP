@@ -1,0 +1,36 @@
+﻿@model RegisterViewModel
+
+<h2>Регистрация</h2>
+<form asp-action="Register" method="post">
+    <div>
+        <label>Имя</label>
+        <input asp-for="FirstName" />
+        <span asp-validation-for="FirstName"></span>
+    </div>
+    <div>
+        <label>Фамилия</label>
+        <input asp-for="LastName" />
+        <span asp-validation-for="LastName"></span>
+    </div>
+    <div>
+        <label>Отчество</label>
+        <input asp-for="Pathronomic" />
+        <span asp-validation-for="Pathronomic"></span>
+    </div>
+    <div>
+        <label>Почта</label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label>Логин</label>
+        <input asp-for="Login" />
+        <span asp-validation-for="Login"></span>
+    </div>
+    <div>
+        <label>Пароль</label>
+        <input asp-for="Password" type="password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <button type="submit">Зарегистрироваться</button>
+</form>

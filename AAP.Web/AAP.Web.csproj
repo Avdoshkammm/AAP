@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AAP.Application\AAP.Application.csproj" />
     <ProjectReference Include="..\AAP.Infrastructure\AAP.Infrastructure.csproj" />
   </ItemGroup>
 

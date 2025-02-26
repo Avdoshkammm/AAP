@@ -1,0 +1,29 @@
+﻿using AAP.Application.DTO;
+using AAP.Application.Interfaces;
+using AAP.Domain.Entities;
+using AAP.Domain.Interfaces;
+using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AAP.Application.Services
+{
+    public class AccountService : IAccountService
+    {
+        private readonly IMapper mapper;
+        private readonly IAccountRepository repository;
+        public AccountService(IMapper _mapper, IAccountRepository _repository)
+        {
+            mapper = _mapper;
+            repository = _repository;
+        }
+        public async Task Register(UserDTO userdto, string password)
+        {
+            User user = mapper.Map<User>(userdto);
+            await repository.Register(user, password);
+        }
+    }
+}

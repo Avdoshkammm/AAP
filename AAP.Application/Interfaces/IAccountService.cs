@@ -10,5 +10,6 @@ namespace AAP.Application.Interfaces
     public interface IAccountService
     {
         Task Register(UserDTO userdto, string password);
+        Task Login(UserDTO userdto);
     }
 }

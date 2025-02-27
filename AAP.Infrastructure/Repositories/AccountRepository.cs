@@ -1,11 +1,6 @@
 ﻿using AAP.Domain.Entities;
 using AAP.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AAP.Infrastructure.Repositories
 {
@@ -17,6 +12,16 @@ namespace AAP.Infrastructure.Repositories
         {
             userManager = _userManager;
             singInManager = _signInManager;
+        }
+
+        public async Task<User> Login(User user)
+        {
+            User? logUser = await userManager.FindByEmailAsync(user.UserName);
+            if (logUser == null)
+            {
+                logUser = await userManager.FindByNameAsync(user.UserName);
+            }
+            return logUser;
         }
 
         public async Task<User> Register(User user, string password)
@@ -49,6 +54,13 @@ namespace AAP.Infrastructure.Repositories
                 }
             }
             return user;
+        }
+
+        
+
+        private async Task SignInAsync(User user)
+        {
+            await singInManager.SignInAsync(user, isPersistent: false);
         }
     }
 }

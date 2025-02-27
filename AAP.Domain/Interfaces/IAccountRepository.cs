@@ -10,5 +10,6 @@ namespace AAP.Domain.Interfaces
     public interface IAccountRepository
     {
         Task<User> Register(User user, string password);
+        Task<User> Login(User user);
     }
 }

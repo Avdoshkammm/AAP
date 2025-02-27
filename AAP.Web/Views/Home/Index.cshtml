@@ -1,6 +1,11 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<body>
+    <a asp-action="Privacy" class="btn btn-primary">Privacy</a>
+
+    @* @if(Context.Session.GetString("UserRole") == "Admin")
+    {
+        <a asp-action="Index" class="btn btn-primary">Home</a>
+    } *@
+</body>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>

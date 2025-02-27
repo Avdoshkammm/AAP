@@ -24,6 +24,11 @@ namespace AAP.Infrastructure.Repositories
             return logUser;
         }
 
+        public Task PasswordSignInAsync(User user, string password, bool rememberMe, bool lockoutOnFailure)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<User> Register(User user, string password)
         {
             User? exUserByLogin = await userManager.FindByNameAsync(user.UserName);
@@ -56,11 +61,9 @@ namespace AAP.Infrastructure.Repositories
             return user;
         }
 
-        
-
-        private async Task SignInAsync(User user)
+        public async Task SignInAsync(User user, bool ispersistent)
         {
-            await singInManager.SignInAsync(user, isPersistent: false);
+            await singInManager.SignInAsync(user, isPersistent: ispersistent);
         }
     }
 }

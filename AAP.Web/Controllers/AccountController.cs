@@ -11,12 +11,10 @@ namespace AAP.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountRepository service;
-        private readonly UserManager<User> um;
         private readonly SignInManager<User> sim;
-        public AccountController(IAccountRepository _service, UserManager<User> _um, SignInManager<User> _sim)
+        public AccountController(IAccountRepository _service, SignInManager<User> _sim)
         {
             service = _service;
-            um = _um;
             sim = _sim;
         }
         [HttpGet]
@@ -25,8 +23,6 @@ namespace AAP.Web.Controllers
             return View();
         }
 
-        //с класса dto сделал user просто
-        //использовал другой интерфейс
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel viewModel)
@@ -56,48 +52,37 @@ namespace AAP.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel viewModel)
+        public async Task<IActionResult> Login(LoginViewModel LVM)
         {
             if (ModelState.IsValid)
             {
-                /*
-                User? user = await um.FindByEmailAsync(viewModel.Login);
-                if(user == null)
+                User dbUser = new User()
                 {
-                    user = await um.FindByNameAsync(viewModel.Login);
-                }*/
-
-                User dbuser = new User()
-                {
-                    UserName = viewModel.Login,
+                    UserName = LVM.Login
                 };
-
-                var user = await service.Login(dbuser);
-
-                //var loguser = await service.Login(user);
+                var user = await service.Login(dbUser);
                 if(user != null)
                 {
-                    var result = await sim.PasswordSignInAsync(user, viewModel.Password, viewModel.RememberMe, lockoutOnFailure: false);
+                    var result = await sim.PasswordSignInAsync(user, LVM.Password, LVM.RememberMe, lockoutOnFailure: false);
                     if (result.Succeeded)
                     {
-                        //HttpContext.Session.SetString("UserID", user.Id);
-                        //var role = await um.GetRolesAsync(user);
-                        //HttpContext.Session.SetString("UserRole", role.FirstOrDefault());
-                        await SignInAsync(user);
-                        return RedirectToAction("Index","Home");
+                        await service.SignInAsync(user, ispersistent: false);
+                        //await SignInAsync(user, false);
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
                         ModelState.AddModelError(string.Empty, "Invalid login attemp");
+                        return RedirectToAction("Privacy", "Home");
                     }
                 }
             }
-            return View(viewModel);
-        }   
-
-        private async Task SignInAsync(User user)
-        {
-            await sim.SignInAsync(user, isPersistent: false);
+            return View(LVM);
         }
+
+        //private async Task SignInAsync(User user, bool ispersistent)
+        //{
+        //    await sim.SignInAsync(user, isPersistent: false);
+        //}
     }
 }
